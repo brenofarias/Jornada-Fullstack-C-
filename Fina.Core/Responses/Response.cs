@@ -2,7 +2,7 @@
 
 namespace Fina.Core.Responses
 {
-    public abstract class Response<TData>
+    public class Response<TData>
     {
         private int _code = Configuration.DefaultStatusCode;
 
@@ -11,9 +11,9 @@ namespace Fina.Core.Responses
             => _code = Configuration.DefaultStatusCode;
 
         public Response(
-            TData? data, 
+            TData? data,
             int code = Configuration.DefaultStatusCode,
-            string? message = null) 
+            string? message = null)
         {
             Data = data;
             _code = code;
