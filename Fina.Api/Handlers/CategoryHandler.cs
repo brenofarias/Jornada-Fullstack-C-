@@ -7,10 +7,14 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Fina.Api.Handlers
 {
-    public class CategoryHandler (AppDbContext context) : ICategoryHandler
+    public class CategoryHandler (AppDbContext context, ILogger<CategoryHandler> logger) : ICategoryHandler
     {
+        private readonly ILogger<CategoryHandler> _logger = logger;
+        
         public async Task<Response<Category?>> CreateAsync(CreateCategoryRequest request)
         {
+            _logger.LogInformation("=========== Acionando o método Create ===========");
+
             var category = new Category
             {
                 UserId = request.UserId,
@@ -20,14 +24,20 @@ namespace Fina.Api.Handlers
 
             try
             {
-                await context.Category.AddAsync(category);
-                await context.SaveChangesAsync();
+                //await context.Category.AddAsync(category);
+                //await context.SaveChangesAsync();
 
-                return new Response<Category?>(category, code: 201, message: "Categoria retornada com sucesso");
+                //_logger.LogInformation("Foi criado uma categoria: " + category.Title);
+
+                //return new Response<Category?>(category, code: 201, message: "Categoria retornada com sucesso");
+                throw new Exception("Sample exception");
+
             }
             catch (Exception e)
             {
+                _logger.LogError(e, "Erro ao criar categoria");
                 return new Response<Category?>(data: null, code: 500, message: "Não foi possível criar uma categoria");
+                
 
             }
         }
